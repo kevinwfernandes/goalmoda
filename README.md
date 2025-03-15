@@ -1,55 +1,68 @@
-# Goal Moda - Loja de Camisas de Times
+# Goal Moda - Loja de Roupas Online
 
-Uma loja online moderna desenvolvida com Next.js e Tailwind CSS para venda de camisas oficiais de times de futebol.
+Uma loja online moderna e responsiva para venda de camisas de times de futebol.
 
-## 🚀 Tecnologias
+## Screenshots
+
+### Página Inicial
+![Página Inicial](/screenshots/home.png)
+
+### Carrinho de Compras
+![Carrinho de Compras](/screenshots/cart.png)
+
+### Versão Mobile
+![Versão Mobile](/screenshots/mobile.png)
+
+## Tecnologias Utilizadas
 
 - Next.js 14
-- React
 - TypeScript
 - Tailwind CSS
+- Prisma (ORM)
 
-## 💻 Funcionalidades
+## Funcionalidades
 
-- Layout responsivo
-- Catálogo de produtos
-- Carrinho de compras interativo
-- Efeitos visuais modernos
-- Sistema de busca
-- Interface amigável
+- ✨ Design moderno e responsivo
+- 🛒 Carrinho de compras interativo
+- 📱 Experiência mobile otimizada
+- 🔍 Barra de pesquisa
+- 💳 Sistema de pagamento (em desenvolvimento)
 
-## 📦 Instalação
+## Como Instalar
 
+1. Clone o repositório:
 ```bash
-# Clone o repositório
-git clone [URL_DO_SEU_REPOSITORIO]
+git clone [url-do-seu-repositorio]
+```
 
-# Entre na pasta do projeto
-cd lojaroupa
-
-# Instale as dependências
+2. Instale as dependências:
+```bash
 npm install
+```
 
-# Inicie o servidor de desenvolvimento
+3. Configure as variáveis de ambiente:
+```bash
+cp .env.example .env
+```
+
+4. Inicie o servidor de desenvolvimento:
+```bash
 npm run dev
 ```
 
-## 🎨 Layout
+## Deploy
 
-- Header com barra de busca e carrinho
-- Grid responsivo de produtos
-- Cards com efeitos hover
-- Carrinho interativo com preview
-- Footer informativo
+Este projeto está configurado para deploy na Vercel. Para fazer o deploy:
 
-## 📱 Screenshots
+1. Crie uma conta na [Vercel](https://vercel.com)
+2. Conecte seu repositório GitHub
+3. Clique em "Import Project"
+4. Siga as instruções de deploy
 
-[Adicione screenshots do seu projeto aqui]
+## Contribuição
 
-## 🤝 Contribuindo
+Contribuições são sempre bem-vindas! Por favor, leia as diretrizes de contribuição antes de enviar um pull request.
 
-Contribuições são sempre bem-vindas! Por favor, leia as diretrizes de contribuição primeiro.
+## Licença
 
-## 📝 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes. 
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.

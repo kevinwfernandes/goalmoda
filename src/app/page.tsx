@@ -5,6 +5,7 @@ export default function Home() {
   const [carrinhoQuantidade, setCarrinhoQuantidade] = useState(0);
   const [produtosNoCarrinho, setProdutosNoCarrinho] = useState<Array<{ id: number; quantidade: number }>>([]);
   const [showCarrinho, setShowCarrinho] = useState(false);
+  const [menuAberto, setMenuAberto] = useState(false);
 
   const produtos = [
     {
@@ -106,11 +107,11 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <h1 className="text-3xl font-bold text-blue-600">GOAL MODA</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-blue-600">GOAL MODA</h1>
 
-            {/* Search Bar */}
-            <div className="flex-1 max-w-2xl mx-8">
-              <div className="relative">
+            {/* Search Bar - Esconde em mobile */}
+            <div className="hidden md:flex flex-1 max-w-2xl mx-8">
+              <div className="relative w-full">
                 <input
                   type="text"
                   placeholder="O que você procura?"
@@ -123,18 +124,19 @@ export default function Home() {
             </div>
 
             {/* User Actions */}
-            <div className="flex items-center space-x-6">
-              <a href="#" className="text-gray-600 hover:text-blue-600">
+            <div className="flex items-center space-x-4 md:space-x-6">
+              {/* Botão de busca mobile */}
+              <button className="md:hidden text-gray-600 hover:text-blue-600">
+                🔍
+              </button>
+              
+              <a href="#" className="hidden md:block text-gray-600 hover:text-blue-600">
                 Entrar
               </a>
-              <a href="#" className="text-gray-600 hover:text-blue-600">
+              <a href="#" className="hidden md:block text-gray-600 hover:text-blue-600">
                 Favoritos
               </a>
-              <div 
-                className="relative"
-                onMouseEnter={() => setShowCarrinho(true)}
-                onMouseLeave={() => setShowCarrinho(false)}
-              >
+              <div className="relative group">
                 <a href="#" className="flex items-center text-gray-600 hover:text-blue-600">
                   Carrinho
                   {carrinhoQuantidade > 0 && (
@@ -143,49 +145,47 @@ export default function Home() {
                     </span>
                   )}
                 </a>
-
-                {/* Popover do Carrinho */}
-                {showCarrinho && carrinhoQuantidade > 0 && (
-                  <div className="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
+                
+                {/* Dropdown do Carrinho */}
+                {carrinhoQuantidade > 0 && (
+                  <div className="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-xl border hidden group-hover:block z-50">
                     <div className="p-4">
-                      <div className="flex justify-between items-center mb-4">
-                        <h3 className="font-semibold text-gray-800">Seu Carrinho</h3>
-                        <button
-                          onClick={limparCarrinho}
-                          className="text-xs text-red-600 hover:text-red-800"
-                        >
-                          Limpar Carrinho
-                        </button>
-                      </div>
-                      <div className="max-h-60 overflow-auto">
-                        {produtosNoCarrinho.map(item => {
+                      <h3 className="text-lg font-semibold mb-3">Seu Carrinho</h3>
+                      <div className="space-y-3 max-h-60 overflow-auto">
+                        {produtosNoCarrinho.map((item) => {
                           const produto = getProdutoInfo(item.id);
-                          if (!produto) return null;
-                          return (
-                            <div key={item.id} className="flex items-center gap-2 py-2 border-b border-gray-100">
-                              <img
-                                src={produto.imagem}
-                                alt={produto.nome}
+                          return produto ? (
+                            <div key={item.id} className="flex items-center gap-3">
+                              <img 
+                                src={produto.imagem} 
+                                alt={produto.nome} 
                                 className="w-12 h-12 object-cover rounded"
                               />
                               <div className="flex-1">
-                                <p className="text-sm font-medium text-gray-800">{produto.nome}</p>
-                                <p className="text-xs text-gray-500">
-                                  {item.quantidade}x R$ {produto.preco.toFixed(2)}
-                                </p>
+                                <p className="text-sm font-medium">{produto.nome}</p>
+                                <p className="text-xs text-gray-500">Qtd: {item.quantidade}</p>
                               </div>
+                              <p className="text-sm font-semibold">
+                                R$ {(produto.preco * item.quantidade).toFixed(2)}
+                              </p>
                             </div>
-                          );
+                          ) : null;
                         })}
                       </div>
-                      <div className="mt-4 pt-4 border-t border-gray-100">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-medium text-gray-800">Total:</span>
-                          <span className="text-blue-600 font-bold">
-                            R$ {calcularTotal().toFixed(2)}
-                          </span>
+                      <div className="border-t mt-3 pt-3">
+                        <div className="flex justify-between font-semibold">
+                          <span>Total:</span>
+                          <span>R$ {calcularTotal().toFixed(2)}</span>
                         </div>
-                        <button className="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+                        <button 
+                          onClick={limparCarrinho}
+                          className="w-full mt-3 bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition-colors text-sm"
+                        >
+                          Limpar Carrinho
+                        </button>
+                        <button 
+                          className="w-full mt-2 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors text-sm"
+                        >
                           Finalizar Compra
                         </button>
                       </div>
@@ -193,19 +193,37 @@ export default function Home() {
                   </div>
                 )}
               </div>
+              
+              {/* Menu Hamburguer */}
+              <button 
+                onClick={() => setMenuAberto(!menuAberto)}
+                className="md:hidden text-gray-600 hover:text-blue-600 focus:outline-none"
+              >
+                {menuAberto ? '✕' : '☰'}
+              </button>
             </div>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="bg-white border-t">
+        <nav className={`bg-white border-t ${menuAberto ? 'block' : 'hidden'} md:block`}>
           <div className="max-w-6xl mx-auto px-4">
-            <ul className="flex space-x-8 py-3">
-              <li><a href="#" className="text-gray-700 hover:text-blue-600 font-medium">MASCULINO</a></li>
-              <li><a href="#" className="text-gray-700 hover:text-blue-600 font-medium">FEMININO</a></li>
-              <li><a href="#" className="text-gray-700 hover:text-blue-600 font-medium">TIMES</a></li>
-              <li><a href="#" className="text-gray-700 hover:text-blue-600 font-medium">OFERTAS</a></li>
-              <li><a href="#" className="text-gray-700 hover:text-blue-600 font-medium">LANÇAMENTOS</a></li>
+            <ul className="flex flex-col md:flex-row md:space-x-8 py-3">
+              <li className="py-2 md:py-0">
+                <a href="#" className="block text-gray-700 hover:text-blue-600 font-medium">MASCULINO</a>
+              </li>
+              <li className="py-2 md:py-0">
+                <a href="#" className="block text-gray-700 hover:text-blue-600 font-medium">FEMININO</a>
+              </li>
+              <li className="py-2 md:py-0">
+                <a href="#" className="block text-gray-700 hover:text-blue-600 font-medium">TIMES</a>
+              </li>
+              <li className="py-2 md:py-0">
+                <a href="#" className="block text-gray-700 hover:text-blue-600 font-medium">OFERTAS</a>
+              </li>
+              <li className="py-2 md:py-0">
+                <a href="#" className="block text-gray-700 hover:text-blue-600 font-medium">LANÇAMENTOS</a>
+              </li>
             </ul>
           </div>
         </nav>
