@@ -1,10 +1,8 @@
-import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { NextRequest } from 'next/server';
+import prisma from '@/lib/prisma';
 
 // GET /api/cart - Busca o carrinho do usuário
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     // TODO: Implementar autenticação e pegar userId do token
     const userId = 'user_id'; // Temporário
@@ -20,14 +18,14 @@ export async function GET(request: Request) {
       }
     });
 
-    return NextResponse.json(cart);
+    return Response.json(cart);
   } catch (error) {
-    return NextResponse.json({ error: 'Erro ao buscar carrinho' }, { status: 500 });
+    return Response.json({ error: 'Erro ao buscar carrinho' }, { status: 500 });
   }
 }
 
 // POST /api/cart - Adiciona item ao carrinho
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     // TODO: Implementar autenticação e pegar userId do token
@@ -56,8 +54,8 @@ export async function POST(request: Request) {
       }
     });
 
-    return NextResponse.json(cartItem, { status: 201 });
+    return Response.json(cartItem, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ error: 'Erro ao adicionar item ao carrinho' }, { status: 500 });
+    return Response.json({ error: 'Erro ao adicionar item ao carrinho' }, { status: 500 });
   }
 } 

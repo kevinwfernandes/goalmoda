@@ -1,37 +1,33 @@
-import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { NextRequest } from 'next/server';
+import prisma from '@/lib/prisma';
 
-const prisma = new PrismaClient();
-
-// GET /api/products/[id] - Busca um produto específico
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+// GET /api/products/[id]
+export async function GET(request: NextRequest) {
   try {
+    const id = request.nextUrl.pathname.split('/').pop();
+    
     const product = await prisma.product.findUnique({
-      where: { id: params.id }
+      where: { id }
     });
 
     if (!product) {
-      return NextResponse.json({ error: 'Produto não encontrado' }, { status: 404 });
+      return Response.json({ error: 'Produto não encontrado' }, { status: 404 });
     }
 
-    return NextResponse.json(product);
+    return Response.json(product);
   } catch (error) {
-    return NextResponse.json({ error: 'Erro ao buscar produto' }, { status: 500 });
+    return Response.json({ error: 'Erro ao buscar produto' }, { status: 500 });
   }
 }
 
-// PUT /api/products/[id] - Atualiza um produto
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+// PUT /api/products/[id]
+export async function PUT(request: NextRequest) {
   try {
+    const id = request.nextUrl.pathname.split('/').pop();
     const body = await request.json();
+    
     const product = await prisma.product.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         name: body.name,
         description: body.description,
@@ -42,23 +38,24 @@ export async function PUT(
         stock: body.stock
       }
     });
-    return NextResponse.json(product);
+    
+    return Response.json(product);
   } catch (error) {
-    return NextResponse.json({ error: 'Erro ao atualizar produto' }, { status: 500 });
+    return Response.json({ error: 'Erro ao atualizar produto' }, { status: 500 });
   }
 }
 
-// DELETE /api/products/[id] - Remove um produto
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+// DELETE /api/products/[id]
+export async function DELETE(request: NextRequest) {
   try {
+    const id = request.nextUrl.pathname.split('/').pop();
+    
     await prisma.product.delete({
-      where: { id: params.id }
+      where: { id }
     });
-    return new NextResponse(null, { status: 204 });
+    
+    return Response.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: 'Erro ao deletar produto' }, { status: 500 });
+    return Response.json({ error: 'Erro ao deletar produto' }, { status: 500 });
   }
 } 
