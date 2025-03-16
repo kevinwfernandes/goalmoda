@@ -4,11 +4,11 @@ import prisma from '@/lib/prisma';
 // PUT /api/cart/[id] - Atualiza quantidade de um item no carrinho
 export async function PUT(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } } // Corrigido aqui
 ) {
   try {
     const { quantity } = await request.json();
-    const { id } = context.params;
+    const { id } = params; // Acessa params diretamente
 
     const updatedCartItem = await prisma.cartItem.update({
       where: { id },
@@ -27,10 +27,10 @@ export async function PUT(
 // DELETE /api/cart/[id] - Remove um item do carrinho
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } } // Corrigido aqui também
 ) {
   try {
-    const { id } = context.params;
+    const { id } = params; // Acessa params diretamente
 
     await prisma.cartItem.delete({
       where: { id }
@@ -43,4 +43,4 @@ export async function DELETE(
       { status: 500 }
     );
   }
-} 
+}
