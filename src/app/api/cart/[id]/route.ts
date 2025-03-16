@@ -3,15 +3,21 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+interface RouteParams {
+  params: {
+    id: string;
+  };
+}
+
 // PUT /api/cart/[id] - Atualiza quantidade de um item no carrinho
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: RouteParams
 ) {
   try {
     const body = await request.json();
     const cartItem = await prisma.cartItem.update({
-      where: { id: params.id },
+      where: { id: context.params.id },
       data: {
         quantity: body.quantity
       },
@@ -28,11 +34,11 @@ export async function PUT(
 // DELETE /api/cart/[id] - Remove um item do carrinho
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: RouteParams
 ) {
   try {
     await prisma.cartItem.delete({
-      where: { id: params.id }
+      where: { id: context.params.id }
     });
     return new NextResponse(null, { status: 204 });
   } catch (error) {
