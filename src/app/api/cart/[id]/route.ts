@@ -3,16 +3,10 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-interface RouteParams {
-  params: {
-    id: string;
-  };
-}
-
 // PUT /api/cart/[id] - Atualiza quantidade de um item no carrinho
 export async function PUT(
   request: NextRequest,
-  context: RouteParams
+  context: { params: { id: string } }
 ) {
   try {
     const body = await request.json();
@@ -34,7 +28,7 @@ export async function PUT(
 // DELETE /api/cart/[id] - Remove um item do carrinho
 export async function DELETE(
   request: NextRequest,
-  context: RouteParams
+  context: { params: { id: string } }
 ) {
   try {
     await prisma.cartItem.delete({
