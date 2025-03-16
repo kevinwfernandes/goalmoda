@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+interface RouteParams {
+  params: {
+    id: string;
+  };
+}
+
 // PUT /api/cart/[id] - Atualiza quantidade de um item no carrinho
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
     const { quantity } = await request.json();
@@ -26,7 +32,7 @@ export async function PUT(
 // DELETE /api/cart/[id] - Remove um item do carrinho
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
     await prisma.cartItem.delete({
